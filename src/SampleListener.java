@@ -1,7 +1,6 @@
 import com.leapmotion.leap.*;
 import com.leapmotion.leap.Frame;
 
-import javax.swing.*;
 import java.awt.*;
 
 class SampleListener extends Listener {
