@@ -4,10 +4,15 @@ import com.leapmotion.leap.Frame;
 import java.awt.*;
 
 class SampleListener extends Listener {
+    private Logger logger;
+    private String state;
+    private boolean stateChanged;
 
     public void onConnect(Controller controller) {
         System.out.println("Connected");
         controller.enableGesture(Gesture.Type.TYPE_SWIPE);
+        controller.setPolicy(Controller.PolicyFlag.POLICY_OPTIMIZE_HMD);
+        logger = new Logger();
     }
 
     public void onFrame(Controller controller) {
@@ -44,9 +49,13 @@ class SampleListener extends Listener {
             if((frame.hands().rightmost().palmPosition().getX() < 30) ){
                 Sample.pubtextLabel.setText("Hand is approaching mouse");
                 Sample.pubpanel.setBackground(Color.GREEN);
+                stateChanged =  (state == "MOUSE" ? false : true);
+                state = "MOUSE";
             }else{
                 Sample.pubtextLabel.setText("Hand is on keyboard");
                 Sample.pubpanel.setBackground(Color.RED);
+                stateChanged =  (state == "KEYBOARD" ? false : true);
+                state = "KEYBOARD";
             }
             Sample.pubdistanceLabel.setText("X Position: " + (frame.hands().rightmost().palmPosition().getX())/10 + " cm");
         }else{
@@ -54,6 +63,8 @@ class SampleListener extends Listener {
             Sample.pubdistanceLabel.setText("");
             Sample.pubpanel.setBackground(Color.BLACK);
         }
+
+        if(stateChanged && state != null) logger.writeLog(state);
 
 
         /*System.out.println("Frame id: " + frame.id()
