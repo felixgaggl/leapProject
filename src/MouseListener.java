@@ -1,6 +1,8 @@
 import com.leapmotion.leap.*;
 import com.leapmotion.leap.Frame;
+import com.leapmotion.leap.Image;
 
+import java.awt.*;
 import java.util.Objects;
 
 
@@ -43,15 +45,22 @@ public class MouseListener extends Listener {
             if(!Objects.equals(state, newState)){
                 state = newState;
                 System.out.println("State changed to: " + state);
+                Mouse.pubtextLabel.setText(state);
+                Mouse.pubpanel.setBackground(Objects.equals(state, "HANDON") ? Color.GREEN: Color.RED);
             }
         }
 
         if(frame.hands().count() != 0 && !Objects.equals(state, "HANDON")){
-            System.out.println("HAND DETECTED AND NOT ON DEVICE");
+            //System.out.println("HAND DETECTED AND NOT ON DEVICE");
             if(Math.abs(frame.hands().rightmost().palmPosition().getX()) < 50 && Math.abs(frame.hands().rightmost().palmPosition().getZ()) < 50){
-                System.out.println("HAND ABOVE MOUSE");
+                Mouse.pubtextLabel.setText("HAND ABOVE MOUSE");
+                Mouse.pubpanel.setBackground(Color.ORANGE);
+                //System.out.println("HAND ABOVE MOUSE");
             }
 
+        }else if(frame.hands().count() == 0 && Objects.equals(state, "HANDOFF")){
+            Mouse.pubtextLabel.setText("HANDOFF");
+            Mouse.pubpanel.setBackground(Color.RED);
         }
 
         //palmPosition(device set up with cable to the back): (back/forth, up/down, left/right)
