@@ -13,6 +13,13 @@ class SampleListener extends Listener {
         controller.enableGesture(Gesture.Type.TYPE_SWIPE);
         controller.setPolicy(Controller.PolicyFlag.POLICY_OPTIMIZE_HMD);
         logger = new Logger();
+
+        System.out.println(controller.devices().get(0));
+
+        controller.setPaused(true);
+
+        System.out.println(controller.devices().count());
+        //System.out.println(controller.devices().get(1));
     }
 
     public void onFrame(Controller controller) {
@@ -44,27 +51,29 @@ class SampleListener extends Listener {
             Sample.pubpanel.setBackground(Color.RED);
         }
         */
-
-        if(frame.hands().count() != 0){
-            if((frame.hands().rightmost().palmPosition().getX() < 30) ){
-                Sample.pubtextLabel.setText("Hand is approaching mouse");
-                Sample.pubpanel.setBackground(Color.GREEN);
-                stateChanged =  (state == "MOUSE" ? false : true);
-                state = "MOUSE";
-            }else{
-                Sample.pubtextLabel.setText("Hand is on keyboard");
-                Sample.pubpanel.setBackground(Color.RED);
-                stateChanged =  (state == "KEYBOARD" ? false : true);
-                state = "KEYBOARD";
+        if(Sample.canWrite) {
+            if (frame.hands().count() != 0) {
+                if ((frame.hands().rightmost().palmPosition().getX() < 30)) {
+                    Sample.pubtextLabel.setText("Hand is approaching mouse");
+                    Sample.pubpanel.setBackground(Color.GREEN);
+                    stateChanged = (state == "MOUSE" ? false : true);
+                    state = "MOUSE";
+                } else {
+                    Sample.pubtextLabel.setText("Hand is on keyboard");
+                    Sample.pubpanel.setBackground(Color.RED);
+                    stateChanged = (state == "KEYBOARD" ? false : true);
+                    state = "KEYBOARD";
+                }
+                Sample.pubdistanceLabel.setText("X Position: " + (frame.hands().rightmost().palmPosition().getX()) / 10 + " cm");
+            } else {
+                Sample.pubtextLabel.setText("NO Hand detected");
+                Sample.pubdistanceLabel.setText("");
+                Sample.pubpanel.setBackground(Color.BLACK);
             }
-            Sample.pubdistanceLabel.setText("X Position: " + (frame.hands().rightmost().palmPosition().getX())/10 + " cm");
-        }else{
-            Sample.pubtextLabel.setText("NO Hand detected");
-            Sample.pubdistanceLabel.setText("");
-            Sample.pubpanel.setBackground(Color.BLACK);
+            if(stateChanged && state != null) logger.writeLog(state);
         }
 
-        if(stateChanged && state != null) logger.writeLog(state);
+
 
 
         /*System.out.println("Frame id: " + frame.id()

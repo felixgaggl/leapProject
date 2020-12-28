@@ -17,6 +17,10 @@ public class MouseListener extends Listener {
         controller.setPolicy(Controller.PolicyFlag.POLICY_IMAGES);
         state = "START";
 
+        System.out.println(controller.devices().count());
+        System.out.println(controller.failedDevices().count());
+        //System.out.println(controller.devices().get(1));
+
 
     }
 
