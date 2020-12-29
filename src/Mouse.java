@@ -3,12 +3,17 @@ import com.leapmotion.leap.Controller;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.net.InetAddress;
+import java.net.Socket;
 
 public class Mouse {
     public static JLabel pubtextLabel;
     public static JLabel pubdistanceLabel;
     public static JLabel pubgestureLabel;
     public static JPanel pubpanel;
+    public static PrintStream ps;
 
     public static void main(String[] args) {
 
@@ -19,7 +24,21 @@ public class Mouse {
         // Have the sample listener receive events from the controller
         controller.addListener(listener);
 
-        createGUI();
+        //createGUI();
+
+
+
+
+        try {
+            InetAddress ip = InetAddress.getByName("localhost");
+            Socket s = new Socket(ip, 3141);
+            OutputStream raus = null;
+            raus = s.getOutputStream();
+            ps = new PrintStream(raus, true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
 
 
