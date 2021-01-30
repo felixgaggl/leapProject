@@ -121,8 +121,8 @@ public class MouseListener extends Listener {
             if(!Objects.equals(state, newState)){
                 state = newState;
                 System.out.println("State changed to: " + state);
-                //Mouse.ps.println(state);
-                Mouse.pubtextLabel.setText((state));
+                Mouse.ps.println(state);
+                //Mouse.pubtextLabel.setText((state));
             }
         }
 
@@ -140,7 +140,7 @@ public class MouseListener extends Listener {
             public void run() {
                 gestureTimer = true;
                 System.out.println("Times up");
-                Mouse.pubtextLabel.setText("Timer is up, i can receive more gestures");
+                //Mouse.pubtextLabel.setText("Timer is up, i can receive more gestures");
             }
         };
         long delay = TimeUnit.SECONDS.toMillis(1);
@@ -151,30 +151,37 @@ public class MouseListener extends Listener {
 
     private void swipeDown() {
         System.out.println("Swipe down");
-        Mouse.pubgestureLabel.setText("Swipe Down detected");
+        //Mouse.pubgestureLabel.setText("Swipe Down detected");
+        Mouse.ps.println("SWIPEDOWN");
+
     }
 
     private void swipeUp() {
         System.out.println("Swipe up");
-        Mouse.pubgestureLabel.setText("Swipe Up detected");
+        //Mouse.pubgestureLabel.setText("Swipe Up detected");
+        Mouse.ps.println("SWIPEUP");
     }
 
     private void swipeRight() {
         System.out.println("Swipe right");
-        Mouse.pubgestureLabel.setText("Swipe Right detected");
+        //Mouse.pubgestureLabel.setText("Swipe Right detected");
+        Mouse.ps.println("SWIPERIGHT");
     }
 
     private void swipeLeft() {
         System.out.println("Swipe left");
-        Mouse.pubgestureLabel.setText("Swipe Left detected");
+        //Mouse.pubgestureLabel.setText("Swipe Left detected");
+        Mouse.ps.println("SWIPELEFT");
     }
 
     private void drawCircle() {
         System.out.println("Circle Drawn");
-        Mouse.pubgestureLabel.setText("Circle detected");
+        //Mouse.pubgestureLabel.setText("Circle detected");
+        Mouse.ps.println("CIRCLE");
     }
     private void keyTap() {
-        Mouse.pubgestureLabel.setText("KEY TAP detected");
+        //Mouse.pubgestureLabel.setText("KEY TAP detected");
+        Mouse.ps.println("KEYTAP");
     }
 
 }

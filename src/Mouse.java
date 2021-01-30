@@ -24,8 +24,8 @@ public class Mouse {
         // Have the sample listener receive events from the controller
         controller.addListener(listener);
 
-        createGUI();
-        //createConnection();
+        //createGUI();
+        createConnection();
 
 
 
@@ -48,7 +48,7 @@ public class Mouse {
 
     private static void createConnection(){
         try {
-            InetAddress ip = InetAddress.getByName("localhost");
+            InetAddress ip = InetAddress.getByName("10.0.0.1");
             Socket s = new Socket(ip, 3141);
             OutputStream raus = null;
             raus = s.getOutputStream();
