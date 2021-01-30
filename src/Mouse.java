@@ -24,20 +24,11 @@ public class Mouse {
         // Have the sample listener receive events from the controller
         controller.addListener(listener);
 
-        //createGUI();
+        createGUI();
+        //createConnection();
 
 
 
-
-        try {
-            InetAddress ip = InetAddress.getByName("localhost");
-            Socket s = new Socket(ip, 3141);
-            OutputStream raus = null;
-            raus = s.getOutputStream();
-            ps = new PrintStream(raus, true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
 
 
@@ -54,6 +45,20 @@ public class Mouse {
         // Remove the sample listener when done
         controller.removeListener(listener);
     }
+
+    private static void createConnection(){
+        try {
+            InetAddress ip = InetAddress.getByName("localhost");
+            Socket s = new Socket(ip, 3141);
+            OutputStream raus = null;
+            raus = s.getOutputStream();
+            ps = new PrintStream(raus, true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 
     private static void createGUI(){
