@@ -120,7 +120,7 @@ public class MouseListener extends Listener {
 
             if(!Objects.equals(state, newState)){
                 state = newState;
-                System.out.println("State changed to: " + state);
+                System.out.println("HandState changed to: " + state);
                 Mouse.ps.println(state);
                 //Mouse.pubtextLabel.setText((state));
             }

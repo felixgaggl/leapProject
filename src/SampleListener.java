@@ -1,88 +1,53 @@
 import com.leapmotion.leap.*;
 import com.leapmotion.leap.Frame;
 
-import java.awt.*;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 class SampleListener extends Listener {
-    private Logger logger;
-    private String state;
-    private boolean stateChanged;
+    private boolean gestureTimer;
+
 
     public void onConnect(Controller controller) {
         System.out.println("Connected");
         controller.enableGesture(Gesture.Type.TYPE_SWIPE);
         controller.setPolicy(Controller.PolicyFlag.POLICY_OPTIMIZE_HMD);
-        logger = new Logger();
-
-        System.out.println(controller.devices().get(0));
-
-        controller.setPaused(true);
-
-        System.out.println(controller.devices().count());
-        //System.out.println(controller.devices().get(1));
+        gestureTimer = true;
     }
 
     public void onFrame(Controller controller) {
         Frame frame = controller.frame();
-        //palmPosition(device set up with cable to the back): (back/forth, up/down, left/right)
-    /*
-        if(frame.hands().count() != 0){
-            if((frame.hands().rightmost().palmVelocity().getX() > 0 && frame.hands().rightmost().palmPosition().getX() < 0) || (frame.hands().rightmost().palmVelocity().getX() < 0 && frame.hands().rightmost().palmPosition().getX() > 0) ){
-                Sample.pubtextLabel.setText("Hand is approaching");
-            }else{
-                Sample.pubtextLabel.setText("Hand is going away");
-            }
 
-            //System.out.println(frame.hands().rightmost().confidence());
-
-
-
-            Sample.pubdistanceLabel.setText("Distance to mouse: " + (frame.hands().rightmost().palmPosition().getX())/10 + " cm");
-            Sample.pubpanel.setBackground(Color.GREEN);
-            Sample.pubgestureLabel.setText("Gesture: ");
-            if(!frame.gestures().isEmpty()) {
-                Sample.pubpanel.setBackground(Color.ORANGE);
-                Sample.pubgestureLabel.setText("Gesture: " + frame.gestures().count());
-            }
-
-        }else{
-            Sample.pubtextLabel.setText("NO Hand is approaching");
-            Sample.pubdistanceLabel.setText("");
-            Sample.pubpanel.setBackground(Color.RED);
-        }
-        */
-        if(Sample.canWrite) {
+        if(Sample.handModel.getPosition() == HandState.NOSTATE){
             if (frame.hands().count() != 0) {
                 if ((frame.hands().rightmost().palmPosition().getX() < 30)) {
-                    Sample.pubtextLabel.setText("Hand is approaching mouse");
-                    Sample.pubpanel.setBackground(Color.GREEN);
-                    stateChanged = (state == "MOUSE" ? false : true);
-                    state = "MOUSE";
+                    Sample.handModel.setPosition(HandState.BETWEEN);
                 } else {
-                    Sample.pubtextLabel.setText("Hand is on keyboard");
-                    Sample.pubpanel.setBackground(Color.RED);
-                    stateChanged = (state == "KEYBOARD" ? false : true);
-                    state = "KEYBOARD";
+                    Sample.handModel.setPosition(HandState.KEYBOARD);
                 }
-                Sample.pubdistanceLabel.setText("X Position: " + (frame.hands().rightmost().palmPosition().getX()) / 10 + " cm");
+                //Sample.pubdistanceLabel.setText("X Position: " + (frame.hands().rightmost().palmPosition().getX()) / 10 + " cm");
             } else {
-                Sample.pubtextLabel.setText("NO Hand detected");
-                Sample.pubdistanceLabel.setText("");
-                Sample.pubpanel.setBackground(Color.BLACK);
+                Sample.handModel.setPosition(HandState.NOSTATE);
             }
-            if(stateChanged && state != null) logger.writeLog(state);
         }
+    }
 
 
+    // Starts a countdown of 1 second before the next gesture can be detected
+    private void gestureDetectedTimer() {
+        gestureTimer = false;
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                gestureTimer = true;
+                System.out.println("Times up");
+                //Mouse.pubtextLabel.setText("Timer is up, i can receive more gestures");
+            }
+        };
+        long delay = TimeUnit.SECONDS.toMillis(1);
+        Timer t = new Timer();
+        t.schedule(task, delay);
 
-
-        /*System.out.println("Frame id: " + frame.id()
-                + ", timestamp: " + frame.timestamp()
-                + ", hands: " + frame.hands().count()
-                + ", handPosition: " + frame.hands().rightmost().palmPosition()
-                + ", fingers: " + frame.fingers().count()
-                + ", tools: " + frame.tools().count()
-                + ", gestures " + frame.gestures().count());
-               */
     }
 }

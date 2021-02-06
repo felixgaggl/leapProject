@@ -26,25 +26,43 @@ public class ServerThread extends Thread {
 
                 switch (line){
                     case "HANDON":
-                        Sample.pubtextLabel.setText("HANDON");
-                        Sample.pubpanel.setBackground(Color.PINK);
-                        Sample.canWrite = false;
+                        Sample.handModel.setPosition(HandState.ONMOUSE);
                         break;
 
                     case "HANDOFF":
-                        Sample.pubtextLabel.setText("HANDOFF");
-                        Sample.pubpanel.setBackground(Color.PINK);
-                        Sample.canWrite = false;
+                        Sample.handModel.setPosition(HandState.NOSTATE);
                         break;
 
                     case "HANDABOVE":
-                        Sample.pubtextLabel.setText("HANDABOVE");
-                        Sample.pubpanel.setBackground(Color.PINK);
-                        Sample.canWrite = false;
+                        Sample.handModel.setPosition(HandState.OVERMOUSE);
                         break;
 
                     case "AWAY":
-                        Sample.canWrite = true;
+                        Sample.handModel.setPosition(HandState.NOSTATE);
+                        break;
+
+                    case "SWIPELEFT":
+                        Sample.handModel.setLastGesture(Gestures.MouseSwipeLeft);
+                        break;
+
+                    case "SWIPERIGHT":
+                        Sample.handModel.setLastGesture(Gestures.MouseSwipeRight);
+                        break;
+
+                    case "SWIPEUP":
+                        Sample.handModel.setLastGesture(Gestures.MouseSwipeUp);
+                        break;
+
+                    case "SWIPEDOWN":
+                        Sample.handModel.setLastGesture(Gestures.MouseSwipeDown);
+                        break;
+
+                    case "CIRCLE":
+                        Sample.handModel.setLastGesture(Gestures.MouseCircle);
+                        break;
+
+                    case "KEYTAP":
+                        Sample.handModel.setLastGesture(Gestures.MouseKeytap);
                         break;
 
                 }

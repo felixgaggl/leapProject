@@ -14,11 +14,13 @@ class Sample {
     public static JPanel pubpanel;
     public static boolean canWrite = true;
     private static ServerSocket serverSocket;
+    public static HandModel handModel;
 
     public static void main(String[] args) {
 
 
         createGUI();
+        handModel = new HandModel();
 
 
         try {
@@ -36,12 +38,6 @@ class Sample {
         // Have the sample listener receive events from the controller
         controller.addListener(listener);
 
-
-
-
-
-
-        //
         // Keep this process running until Enter is pressed
         System.out.println("Press Enter to quit...");
         try {
