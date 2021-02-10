@@ -1,3 +1,5 @@
+import java.awt.*;
+
 public class HandModel {
     private HandState position;
     private Gestures lastGesture;
@@ -21,7 +23,12 @@ public class HandModel {
 
     public void setLastGesture(Gestures lastGesture) {
         this.lastGesture = lastGesture;
-        //TODO write what certain gestures do
+        logger.writeLog(lastGesture.toString());
+        try {
+            GestureActions.handleGesture(lastGesture);
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
     }
 
     public Gestures getLastGesture(){
@@ -31,5 +38,7 @@ public class HandModel {
     public HandState getPosition(){
         return position;
     }
+
+
 
 }

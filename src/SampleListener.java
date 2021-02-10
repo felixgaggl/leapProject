@@ -1,6 +1,7 @@
 import com.leapmotion.leap.*;
 import com.leapmotion.leap.Frame;
 
+import java.awt.*;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -13,6 +14,15 @@ class SampleListener extends Listener {
         System.out.println("Connected");
         controller.enableGesture(Gesture.Type.TYPE_SWIPE);
         controller.setPolicy(Controller.PolicyFlag.POLICY_OPTIMIZE_HMD);
+        controller.enableGesture(Gesture.Type.TYPE_CIRCLE);
+        controller.enableGesture(Gesture.Type.TYPE_KEY_TAP);
+
+        controller.config().setFloat("Gesture.KeyTap.MinDownVelocity", 40.0f);
+        controller.config().setFloat("Gesture.KeyTap.HistorySeconds", .2f);
+        controller.config().setFloat("Gesture.KeyTap.MinDistance", 1.0f);
+        controller.config().save();
+
+
         gestureTimer = true;
     }
 
@@ -31,6 +41,57 @@ class SampleListener extends Listener {
                 Sample.handModel.setPosition(HandState.NOSTATE);
             }
         }
+
+
+
+        if(frame.gestures().count() != 0 && gestureTimer && Sample.handModel.getPosition() == HandState.KEYBOARD) {
+            String gestureString = null;
+            for (Gesture s : frame.gestures()) {
+                // Swipe Gesture detection and all its forms
+                if(s.type() == Gesture.Type.TYPE_SWIPE){
+                    SwipeGesture swipeGesture = new SwipeGesture(s);
+                    System.out.println(swipeGesture.direction());
+                    if(swipeGesture.direction().getX() > 0.65 && Math.abs(swipeGesture.direction().getZ()) < 0.50){
+                        gestureDetectedTimer();
+                        Sample.handModel.setLastGesture(Gestures.KeyboardSwipeRight);
+                    }else if(swipeGesture.direction().getX() < -0.65 && Math.abs(swipeGesture.direction().getZ()) < 0.50){
+                        gestureDetectedTimer();
+                        Sample.handModel.setLastGesture(Gestures.KeyboardSwipeLeft);
+                    }else if(swipeGesture.direction().getZ() > 0.65 && Math.abs(swipeGesture.direction().getX()) < 0.50){
+                        gestureDetectedTimer();
+                        Sample.handModel.setLastGesture(Gestures.KeyboardSwipeDown);
+                    }else if(swipeGesture.direction().getZ() < -0.65 && Math.abs(swipeGesture.direction().getX()) < 0.50){
+                        gestureDetectedTimer();
+                        Sample.handModel.setLastGesture(Gestures.KeyboardSwipeUp);
+                    }
+
+                    // Circle Gesture detection
+                }else if(s.type() == Gesture.Type.TYPE_CIRCLE){
+                    CircleGesture circleGesture = new CircleGesture(s);
+                    System.out.println(circleGesture.radius());
+                    if(circleGesture.radius() > 30){
+                        gestureDetectedTimer();
+                        Sample.handModel.setLastGesture(Gestures.KeyboardCircle);
+                    }
+
+                    // KeyTap Gesture detection
+                }else if(s.type() == Gesture.Type.TYPE_KEY_TAP){
+                    gestureDetectedTimer();
+                    KeyTapGesture keyTapGesture = new KeyTapGesture(s);
+                    Sample.handModel.setLastGesture(Gestures.KeyboardCircle);
+                }
+
+            }
+
+            //Mouse.pubgestureLabel.setText(gestureString);
+
+        }else if(!gestureTimer){
+            Mouse.pubpanel.setBackground(Color.CYAN);
+            Mouse.pubtextLabel.setText("Timer running");
+        }
+
+
+
     }
 
 
