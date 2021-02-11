@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 public class GestureActions {
     public static void handleGesture(Gestures gesture) throws AWTException {
@@ -9,6 +10,29 @@ public class GestureActions {
         int keyCode2;
         switch (gesture) {
             case MouseCircle:
+                // Demo copy selection
+                keyCode = KeyEvent.VK_CONTROL;
+                keyCode1 = KeyEvent.VK_C;
+
+                r.keyPress(keyCode);
+                r.keyPress(keyCode1);
+
+                r.keyRelease(keyCode);
+                r.keyRelease(keyCode1);
+                break;
+            case MouseKeytap:
+                // Demo paste selection
+                keyCode = KeyEvent.VK_CONTROL;
+                keyCode1 = KeyEvent.VK_V;
+
+                r.keyPress(keyCode);
+                r.keyPress(keyCode1);
+
+                r.keyRelease(keyCode);
+                r.keyRelease(keyCode1);
+                break;
+            case MouseSwipeUp:
+                // Demo screenshot action
                 keyCode = KeyEvent.VK_WINDOWS;
                 keyCode1 = KeyEvent.VK_SHIFT;
                 keyCode2 = KeyEvent.VK_S;
@@ -21,10 +45,6 @@ public class GestureActions {
                 r.keyRelease(keyCode1);
                 r.keyRelease(keyCode2);
                 break;
-            case MouseKeytap:
-                break;
-            case MouseSwipeUp:
-                break;
             case MouseSwipeDown:
                 break;
             case MouseSwipeRight:
@@ -32,12 +52,26 @@ public class GestureActions {
             case MouseSwipeLeft:
                 break;
             case KeyboardCircle:
+                try {
+                    Runtime.getRuntime().exec("Notepad");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 break;
             case KeyboardKeytap:
                 break;
             case KeyboardSwipeUp:
                 break;
             case KeyboardSwipeDown:
+                // Demo minimize window that is currently selected
+                keyCode = KeyEvent.VK_ALT;
+                keyCode1 = KeyEvent.VK_ESCAPE;
+                r.keyPress(keyCode);
+                r.keyPress(keyCode1);
+
+                r.keyRelease(keyCode);
+                r.keyRelease(keyCode1);
                 break;
             case KeyboardSwipeLeft:
                 break;

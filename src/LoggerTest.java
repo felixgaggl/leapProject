@@ -1,13 +1,23 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 
 public class LoggerTest {
     public static void main(String[] args) throws AWTException {
 
 
-        Robot r = new Robot();
-        int keyCode = KeyEvent.VK_F;
+        try {
+            Runtime.getRuntime().exec("Notepad");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+/*
+        //Robot r = new Robot();
+        //int keyCode = KeyEvent.VK_F;
         int keyCode1 = KeyEvent.VK_SHIFT;
         int keyCode2 = KeyEvent.VK_S;
         r.keyPress(keyCode);
@@ -16,6 +26,8 @@ public class LoggerTest {
         r.keyRelease(keyCode);
         //r.keyRelease(keyCode1);
         //r.keyRelease(keyCode2);
+
+        */
 
     }
 }

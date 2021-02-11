@@ -102,7 +102,6 @@ class SampleListener extends Listener {
             @Override
             public void run() {
                 gestureTimer = true;
-                System.out.println("Times up");
                 //Mouse.pubtextLabel.setText("Timer is up, i can receive more gestures");
             }
         };
