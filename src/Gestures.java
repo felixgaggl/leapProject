@@ -1,3 +1,6 @@
+/**
+ * Enum-class that defines all the possible internal names for gestures that can be detected
+ */
 public enum Gestures {
     MouseSwipeDown,
     MouseSwipeUp,

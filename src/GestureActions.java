@@ -2,7 +2,17 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
+/**
+ * Class that defines the functions that get executed when certain gestures are detected
+ */
 public class GestureActions {
+    /**
+     * Method that gets called with a specific gesture, then executes a functionality
+     * for now this is all demo functions but this can be expanded
+     *
+     * @param gesture Detected gesture from one of the two leap devices
+     * @throws AWTException
+     */
     public static void handleGesture(Gestures gesture) throws AWTException {
         Robot r = new Robot();
         int keyCode;
@@ -52,6 +62,7 @@ public class GestureActions {
             case MouseSwipeLeft:
                 break;
             case KeyboardCircle:
+                // Demo to show how a program gets started when
                 try {
                     Runtime.getRuntime().exec("Notepad");
                 } catch (IOException e) {

@@ -8,13 +8,24 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-
+/**
+ * Class extends the leapmotion listener, which is used to enable the connection to a leap motion controller and reading out the data
+ * provides methods that get called on connection to the device and on every frame that is detected
+ * detected gestures/ states are written to the main part of the program (started with Sample.java) via sockets by calling Mouse.ps.println()
+ */
 public class MouseListener extends Listener {
     private String state;
     private String newState;
     private boolean stateChanged;
     private boolean gestureTimer;
 
+    /**
+     * Method that gets called to connect to the leap motion controller and defines certain configurations
+     * This includes which gestures are actually detected by the device and which parameters the gestures have to fulfill
+     * gestureTimer is set to true, which indicates that gestures can be detected and there is no need to wait (gestures can only be detected once every second to avoid double recognition)
+     *
+     * @param controller
+     */
     public void onConnect(Controller controller) {
         System.out.println("Connected");
         controller.enableGesture(Gesture.Type.TYPE_SWIPE);
@@ -30,13 +41,19 @@ public class MouseListener extends Listener {
         state = "START";
         gestureTimer = true;
 
-        System.out.println(controller.devices().count());
-        System.out.println(controller.failedDevices().count());
-        //System.out.println(controller.devices().get(1));
+
 
 
     }
 
+    /**
+     * Method that gets called on every incoming frame from the leap motion controller
+     * In this method it is defined which actions are taken when certain inputs by the controller are detected
+     * This includes all the different Gestures and to every gesture there are some unique characteristics that need to be filtered in this section (velocity, radius, etc.)
+     * GestureTimer is checked as well to ensure there are no multi-recognitions
+     *
+     * @param controller
+     */
     public void onFrame(Controller controller) {
         Frame frame = controller.frame();
 
@@ -44,6 +61,7 @@ public class MouseListener extends Listener {
 
             ImageList images = frame.images();
             boolean handOn = false;
+            //check image data for light levels (indicates whether a hand is directly on the sensor or not)
             for (Image image : images) {
                 if(image.data()[1] > 50 || handOn == true){
                     handOn = true;
@@ -107,8 +125,7 @@ public class MouseListener extends Listener {
                 //Mouse.pubgestureLabel.setText(gestureString);
 
             }else if(!gestureTimer){
-                Mouse.pubpanel.setBackground(Color.CYAN);
-                Mouse.pubtextLabel.setText("Timer running");
+
             }else{
                 //Mouse.pubgestureLabel.setText("");
             }
@@ -117,7 +134,7 @@ public class MouseListener extends Listener {
 
 
 
-
+            //only if the recognised state differs from the old one we write to the main program to avoid overcommunication
             if(!Objects.equals(state, newState)){
                 state = newState;
                 System.out.println("HandState changed to: " + state);
@@ -132,7 +149,10 @@ public class MouseListener extends Listener {
 
 
 
-    // Starts a countdown of 1 second before the next gesture can be detected
+    /**
+     * Starts a countdown of 1 second before the next gesture can be detected
+     * this is realised with the timer class provided by java
+     */
     private void gestureDetectedTimer() {
         gestureTimer = false;
         TimerTask task = new TimerTask() {

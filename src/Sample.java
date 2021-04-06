@@ -6,20 +6,30 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-
-class Sample {
-    public static JLabel pubtextLabel;
+/**
+ * Main class that starts the system by creating all necessary Communication-objects (input from second leap and input from actual primary leap)
+ * To be executed at the beginning of every system start
+ */
+public class Sample {
+    /*public static JLabel pubtextLabel;
     public static JLabel pubdistanceLabel;
     public static JLabel pubgestureLabel;
     public static JPanel pubpanel;
+    */
     public static boolean canWrite = true;
     private static ServerSocket serverSocket;
     public static HandModel handModel;
 
+    /**
+     * Starting point of every system execution
+     * Creates the handModel, which represents the current actual state of the interacting hand
+     * setupInputSocket() gets called to initialise the communication to the second leap motion controller
+     * other parts setup the Listener which handles the input of the first leap motion controller and when enter is pressed the execution will be stopped
+     *
+     * @param args
+     */
     public static void main(String[] args) {
 
-
-        //createGUI();
         handModel = new HandModel();
 
 
@@ -30,15 +40,15 @@ class Sample {
         }
 
 
-        // Create a sample listener and controller
+        // create a sample listener and controller
         SampleListener listener = new SampleListener();
         Controller controller = new Controller();
 
 
-        // Have the sample listener receive events from the controller
+        // have the sample listener receive events from the controller
         controller.addListener(listener);
 
-        // Keep this process running until Enter is pressed
+        // keep this process running until Enter is pressed
         System.out.println("Press Enter to quit...");
         try {
             System.in.read();
@@ -46,20 +56,24 @@ class Sample {
             e.printStackTrace();
         }
 
-        // Remove the sample listener when done
+        // remove the sample listener when done
         controller.removeListener(listener);
 
     }
 
+    /**
+     * Starts a new socket on port 3141, which listens to incoming messages from the second leap motion controller, that is started elsewhere
+     * incoming communication is handled on a different thread, so that it is not blocking other executions
+     *
+     * @throws IOException
+     */
     private static void setupInputSocket() throws IOException {
         Socket s = null;
         serverSocket = new ServerSocket(3141);
-        while (s == null)
-        {
+        while (s == null) {
             s = null;
 
-            try
-            {
+            try {
                 // socket object to receive incoming client requests
                 s = serverSocket.accept();
 
@@ -77,38 +91,42 @@ class Sample {
                 // Invoking the start() method
                 t.start();
 
-            }catch (Exception e){
+            } catch (Exception e) {
             }
         }
 
     }
 
 
-
-    private static void createGUI(){
+    /**
+     * Deprecated method, that was used to visualise the input/ status of the hand, but was replaced with actual functions that get executed in the handModel object
+     * Can be adapted and changed and reactivated for development purposes or if system requirements change
+     *
+     * @deprecated
+     */
+    private static void createGUI() {
         JFrame window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 
-        JLabel textLabel = new JLabel("NO Hand is approaching",SwingConstants.CENTER);
-        JLabel distanceLabel = new JLabel("Distance to mouse:",SwingConstants.CENTER);
-        JLabel gestureLabel = new JLabel("Gesture: ",SwingConstants.CENTER);
-        pubtextLabel = textLabel;
-        pubdistanceLabel = distanceLabel;
-        pubgestureLabel = gestureLabel;
+        JLabel textLabel = new JLabel("NO Hand is approaching", SwingConstants.CENTER);
+        JLabel distanceLabel = new JLabel("Distance to mouse:", SwingConstants.CENTER);
+        JLabel gestureLabel = new JLabel("Gesture: ", SwingConstants.CENTER);
+        //pubtextLabel = textLabel;
+        //pubdistanceLabel = distanceLabel;
+        //pubgestureLabel = gestureLabel;
 
-        //textLabel.setPreferredSize(new Dimension(300, 100));
 
         JPanel panel = new JPanel();
-        GridLayout gl = new GridLayout(3,1);
+        GridLayout gl = new GridLayout(3, 1);
         panel.setLayout(gl);
         panel.add(textLabel);
         panel.add(distanceLabel);
         panel.add(gestureLabel);
 
         window.getContentPane().add(panel, BorderLayout.CENTER);
-        pubpanel = panel;
+        //pubpanel = panel;
 
         window.setLocationRelativeTo(null);
         window.pack();
