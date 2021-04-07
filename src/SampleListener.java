@@ -49,7 +49,9 @@ public class SampleListener extends Listener {
     public void onFrame(Controller controller) {
         Frame frame = controller.frame();
 
-        if (Sample.handModel.getPosition() == HandState.NOSTATE) {
+        //System.out.println("X: " + frame.hands().rightmost().palmPosition().getX() + "Y: " + frame.hands().rightmost().palmPosition().getY() + "Z: " + frame.hands().rightmost().palmPosition().getZ());
+
+        if (Sample.handModel.getPosition() == HandState.NOSTATE || Sample.handModel.getPosition() == HandState.BETWEEN || Sample.handModel.getPosition() == HandState.KEYBOARD) {
             if (frame.hands().count() != 0) {
                 if ((frame.hands().rightmost().palmPosition().getX() < 30)) {
                     Sample.handModel.setPosition(HandState.BETWEEN);
@@ -87,7 +89,7 @@ public class SampleListener extends Listener {
                     // Circle Gesture detection
                 } else if (s.type() == Gesture.Type.TYPE_CIRCLE) {
                     CircleGesture circleGesture = new CircleGesture(s);
-                    System.out.println(circleGesture.radius());
+                    //System.out.println(circleGesture.radius());
                     if (circleGesture.radius() > 30) {
                         gestureDetectedTimer();
                         Sample.handModel.setLastGesture(Gestures.KeyboardCircle);

@@ -21,25 +21,25 @@ public class GestureActions {
         switch (gesture) {
             case MouseCircle:
                 // Demo copy selection
-                keyCode = KeyEvent.VK_CONTROL;
+                /*keyCode = KeyEvent.VK_CONTROL;
                 keyCode1 = KeyEvent.VK_C;
 
                 r.keyPress(keyCode);
                 r.keyPress(keyCode1);
 
                 r.keyRelease(keyCode);
-                r.keyRelease(keyCode1);
+                r.keyRelease(keyCode1);*/
                 break;
             case MouseKeytap:
                 // Demo paste selection
-                keyCode = KeyEvent.VK_CONTROL;
+                /*keyCode = KeyEvent.VK_CONTROL;
                 keyCode1 = KeyEvent.VK_V;
 
                 r.keyPress(keyCode);
                 r.keyPress(keyCode1);
 
                 r.keyRelease(keyCode);
-                r.keyRelease(keyCode1);
+                r.keyRelease(keyCode1);*/
                 break;
             case MouseSwipeUp:
                 // Demo screenshot action

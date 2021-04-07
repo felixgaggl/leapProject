@@ -38,6 +38,7 @@ public class Sample {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("here");
 
 
         // create a sample listener and controller
@@ -69,7 +70,7 @@ public class Sample {
      */
     private static void setupInputSocket() throws IOException {
         Socket s = null;
-        serverSocket = new ServerSocket(3141);
+        serverSocket = new ServerSocket(3142);
         while (s == null) {
             s = null;
 

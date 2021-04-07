@@ -30,6 +30,7 @@ public class HandModel {
         if (this.position != position) {
             this.position = position;
             logger.writeLog(position.toString());
+            System.out.println(position.toString());
         }
     }
 
@@ -47,6 +48,7 @@ public class HandModel {
         } catch (AWTException e) {
             e.printStackTrace();
         }
+        System.out.println(lastGesture.toString());
     }
 
     /**

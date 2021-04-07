@@ -39,7 +39,7 @@ public class ServerThread extends Thread {
             String line = null;
             while (line != "Exit") {
                 line = buff.readLine();
-                System.out.println(line);
+                //System.out.println(line);
 
                 switch (line) {
                     case "HANDON":
